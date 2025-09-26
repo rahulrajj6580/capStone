@@ -4,7 +4,7 @@ var schema = mongoose.Schema({
     author : String,
     genre : String,
     description : String,
-    year : Number
+    publishedDate : Date
 },
 {
     timestamps : true

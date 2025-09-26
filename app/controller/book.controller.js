@@ -1,17 +1,19 @@
-const { request } = require("express");
-const db = require("../models")
+const db = require("../models");
+const { checkDuplicate } = require("../utils/validations");
 const book = db.book
 
 exports.addBooks = async (request, response) => {
-
     try {
-
+        const isUnique = await checkDuplicate(request.body.title)
+        if (!isUnique) {
+            return response.status(409).send({ message: "title already exists" })
+        }
         const newBook = new book({
             title: request.body.title,
             author: request.body.title,
             genre: request.body.genre,
             description: request.body.description,
-            year: request.body.year
+            publishedDate: request.body.publishedDate
         })
 
         const data = await newBook.save(newBook);
@@ -45,16 +47,16 @@ exports.getBookById = async (request, response) => {
     }
 }
 
-exports.updateBookById = async (request,response) =>{
-    try{
+exports.updateBookById = async (request, response) => {
+    try {
         const id = request.params.id;
-        const updateData = request.body        
-        const data = await book.findByIdAndUpdate(id,updateData, {new : true})
-        if(!data){
-            return response.status(404).send({message:"book not found"});
+        const updateData = request.body
+        const data = await book.findByIdAndUpdate(id, updateData, { new: true })
+        if (!data) {
+            return response.status(404).send({ message: "book not found" });
         }
         response.status(200).send(data);
-    }catch(err){
-        response.status(500).send({message: "failed with updating record"});
+    } catch (err) {
+        response.status(500).send({ message: "failed with updating record" });
     }
 }

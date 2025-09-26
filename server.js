@@ -25,11 +25,6 @@ db.mongoose.connect(`mongodb://${dbConfiguration.HOST}:${dbConfiguration.PORT}/$
     useNewUrlParser : true,
     useUnifiedTopology : true
 })
-
-db.mongoose.connect(`mongodb://${dbConfiguration.HOST}:${dbConfiguration.PORT}/${dbConfiguration.DB}`,{
-    useNewUrlParser : true,
-    useUnifiedTopology : true
-})
 .then(()=> {
     console.log("MongoDB connection successful")
 })

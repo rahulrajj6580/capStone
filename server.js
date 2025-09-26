@@ -29,11 +29,12 @@ db.mongoose.connect(`mongodb://${dbConfiguration.HOST}:${dbConfiguration.PORT}/$
     console.log("MongoDB connection successful")
 })
 .catch((err) =>{
-    console.log("Something went wrong while connecting MongoDb");
+    console.log("Something went wrong while connecting MongoDb",err);
     process.exit();
 });
 
 require("./app/routes/book.route")(app);
+require("./app/routes/review.route")(app);
 
 app.listen(PORT, () => {
     console.log(`Server is on and running on port ${PORT}.`);

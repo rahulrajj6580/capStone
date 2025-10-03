@@ -1,5 +1,5 @@
-const db = require("../models");
 const { checkDuplicate } = require("../utils/validations");
+const db = require("../models");
 const book = db.book
 
 exports.addBooks = async (request, response) => {
@@ -20,7 +20,7 @@ exports.addBooks = async (request, response) => {
         return response.status(200).send(data);
 
     } catch (err) {
-        response.status(500).send({ message: "error in adding a new record" });
+        response.status(500).send({ message: "error in adding a new record", error : err });
     }
 
 };

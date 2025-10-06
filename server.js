@@ -35,6 +35,7 @@ db.mongoose.connect(`mongodb://${dbConfiguration.HOST}:${dbConfiguration.PORT}/$
 
 require("./app/routes/book.route")(app);
 require("./app/routes/review.route")(app);
+require("./app/routes/user.route")(app);
 
 app.listen(PORT, () => {
     console.log(`Server is on and running on port ${PORT}.`);

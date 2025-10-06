@@ -7,5 +7,7 @@ const db = {};
 db.mongoose = mongoose;
 db.url = dbConfiguration.url;
 db.book = require("./books.model.js")(mongoose)
+db.review = require("./reviews.model.js")(mongoose)
+db.user = require("./user.model.js")(mongoose)
 
 module.exports = db;

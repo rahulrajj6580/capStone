@@ -18,9 +18,11 @@
   },
   "homepage": "https://github.com/rahulrajj6580/capStone#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
+    "json-web-token": "^3.2.0",
     "mongoose": "^8.18.2"
   },
   "devDependencies": {

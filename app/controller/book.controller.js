@@ -20,7 +20,7 @@ exports.addBooks = async (request, response) => {
         return response.status(200).send(data);
 
     } catch (err) {
-        response.status(500).send({ message: "error in adding a new record", error : err });
+        response.status(500).send({ message: "error in adding a new record", error: err });
     }
 
 };
@@ -28,10 +28,10 @@ exports.addBooks = async (request, response) => {
 exports.getAllBooks = async (_, response) => {
     try {
         const data = await book.find();
-        return response.send(data);
+        return response.status(200).send(data);
 
     } catch (err) {
-        response.status(200).status(400).send({ message: "error in getting records" });
+        response.status(400).send({ message: "error in getting records" });
     }
 
 }

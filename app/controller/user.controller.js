@@ -1,9 +1,14 @@
 const bcrypt = require('bcrypt');
+const {checkDuplicateUser} = require("../utils/user.validations")
 const db = require("../models");
 const user = db.user
 
 exports.addUser = async (request, response) => {
     try {
+        const isUniqueUser = await checkDuplicateUser(request.body.email);
+        if(!isUniqueUser){
+            return response.status(409).send({ message: "User already exists" })
+        }
         const hashedPassword = bcrypt.hashSync(request.body.password, 10);
         console.log("password", hashedPassword);
         const newUser = new user({
@@ -40,4 +45,5 @@ exports.getUserById = async (request, response) => {
         return response.status(500).send({ message: "Error getting user by ID" });
     }
 }
+
 

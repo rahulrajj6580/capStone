@@ -1,10 +1,10 @@
-const { checkDuplicate } = require("../utils/validations");
 const db = require("../models");
+const { checkDuplicateTitle } = require("../utils/book.validations");
 const book = db.book
 
 exports.addBooks = async (request, response) => {
     try {
-        const isUnique = await checkDuplicate(request.body.title)
+        const isUnique = await checkDuplicateTitle(request.body.title)
         if (!isUnique) {
             return response.status(409).send({ message: "title already exists" })
         }

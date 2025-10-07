@@ -5,11 +5,13 @@ module.exports = mongoose => {
         phone: String,
         password: String,
         age: Number,
-        address: String
-    },
-        {
-            timestamps: true
-        });
+        address: String,
+        role : {
+            type : String,
+            enum : ['userRole','adminRole'],
+            default : 'userRole'
+        }
+    });
     const user = mongoose.model("Users", schema)
     return user;
 };

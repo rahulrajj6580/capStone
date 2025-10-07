@@ -1,8 +1,15 @@
 const controller = require('../controller/review.controller')
-const paths = `/api/book`
+const router = require("express").Router()
 
 module.exports = (app) => {
-    app.post(`${paths}/:id/review`, controller.addReview);
+    router.post(`/:id/review`, controller.addReview);
 
-    app.get(`${paths}/:id/review`, controller.getAllReviews);
+    router.get(`/:id/review`, controller.getAllReviews);
+
+    router.put(``,controller.editReviewById); //pending
+
+    router.delete('',controller.deleteReviewById); //pending
+
+    app.use('/api/book',router);
+
 }

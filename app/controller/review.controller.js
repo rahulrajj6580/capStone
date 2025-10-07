@@ -26,3 +26,27 @@ exports.getAllReviews = async (_, response) => {
         response.status(500).send({ message: "error in getting records" });
     }
 }
+
+exports.editReviewById = async(request,response) =>{
+    try{
+        const id = request.params.id;
+        const updateData = request.body
+        const data = await review.finfByIdAndUpdate(id,updateData, {new: true})
+        if(!data){
+            return response.status(404).send({message : "Review not found"})
+        }
+        return response.status(200).send(data)
+    }catch(err){
+        return response.status(500).send({ message: "Failed with updating review" });
+    }
+}
+
+exports.deleteReviewById = async(request, response) => {
+    try{
+        const id = request.params.id;
+        const data = await review.deleteOne(id)
+        return response.status(200).send({message : "Review deleted successfully"})
+    }catch(err){
+        return response.status(500).send({ message: "Failed with Deleting review" });
+    }
+}

@@ -20,7 +20,7 @@ exports.addBooks = async (request, response) => {
         return response.status(200).send(data);
 
     } catch (err) {
-        response.status(500).send({ message: "error in adding a new record", error: err });
+        response.status(500).send({ message: "error in adding a new record"});
     }
 
 };

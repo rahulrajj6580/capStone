@@ -1,16 +1,21 @@
 const bcrypt = require('bcrypt');
-const {checkDuplicateUser} = require("../utils/user.validations")
+// const {checkDuplicateUser} = require("../utils/user.validations")
+const { validationResult } = require("express-validator");
 const db = require("../models");
 const user = db.user
 
 exports.addUser = async (request, response) => {
     try {
-        const isUniqueUser = await checkDuplicateUser(request.body.email);
-        if(!isUniqueUser){
-            return response.status(409).send({ message: "User already exists" })
+        // const isUniqueUser = await checkDuplicateUser(request.body.email);
+        // if(!isUniqueUser){
+        //     return response.status(409).send({ message: "User already exists" })
+        // }
+        const errors = validationResult(request);
+        console.log(errors, "errrrrrorrrrrrr");
+        if (!errors.isEmpty()) {
+            return response.status(403).send({ message: errors.errors[0].msg })
         }
         const hashedPassword = bcrypt.hashSync(request.body.password, 10);
-        console.log("password", hashedPassword);
         const newUser = new user({
             name: request.body.name,
             email: request.body.email,
@@ -20,10 +25,10 @@ exports.addUser = async (request, response) => {
             address: request.body.address
         });
         const data = await newUser.save(newUser);
-        console.log(data, "dataaaa")
         return response.status(200).send(data);
     } catch (err) {
-        return response.status(500).send({ message: err.message });
+        console.log(err,"catch block errorrrrrr");
+        return response.status(500).send({ message: 'Error adding a new user' });
     }
 }
 

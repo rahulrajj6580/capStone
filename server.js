@@ -1,5 +1,7 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+
 
 const dbConfiguration = require("./app/config/db.config");
 
@@ -41,10 +43,10 @@ app.listen(PORT, () => {
     console.log(`Server is on and running on port ${PORT}.`);
 });
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(err.status || 500).json({ error: 'Internal Server Error' });
-});
+// app.use((err, req, res, next) => {
+//   console.error(err.stack);
+//   res.status(err.status || 500).json({ error: 'Internal Server Error' });
+// });
 
 
 

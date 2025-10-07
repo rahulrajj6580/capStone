@@ -1,13 +1,17 @@
 const controller = require('../controller/user.controller')
-const paths = `/api/user`
-const validateReqBody = require("../utils/reqBody.validations")
-const {name,phone,address,email,age} = require("../utils/user.validations")
+// const validateReqBody = require("../utils/reqBody.validations")
+const {userValidation} = require("../utils/user.validations")
+const {password} = require('../utils/password.validations');
+const router = require("express").Router();
+// const paths = `/api/user`;
 
+module.exports = app => {
+    router.post("",[userValidation,password], controller.addUser);
 
-module.exports = (app) => {
-    app.post(`${paths}`,validateReqBody([name,phone,address,email,age]), controller.addUser);
+    router.get("", controller.getAllUsers);
 
-    app.get(`${paths}`, controller.getAllUsers);
+    router.get("/:id", controller.getUserById)
 
-    app.get(`${paths}/:id`, controller.getUserById)
+    app.use('/api/user',router);
 }
+

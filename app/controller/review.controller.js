@@ -17,36 +17,41 @@ exports.addReview = async (request, response) => {
 }
 
 
-exports.getAllReviews = async (_, response) => {
+exports.getAllReviews = async (request, response) => {
     try {
-        const data = await review.find();
-        return response.status(200).send(data)
-
+        const { bookId } = request.params;
+        const data = await review.find({ bookId: new mongoose.Types.ObjectId(bookId) });
+        console.log(`reviews       `, data);
+        if (!data || data.length === 0) {
+            return response.status(404).send({ message: "No reviews found for this book" })
+        }
+        return response.status(200).send(data);
     } catch (error) {
         response.status(500).send({ message: "error in getting records" });
     }
 }
 
-exports.editReviewById = async(request,response) =>{
-    try{
+exports.editReviewById = async (request, response) => {
+    try {
         const id = request.params.id;
         const updateData = request.body
-        const data = await review.finfByIdAndUpdate(id,updateData, {new: true})
-        if(!data){
-            return response.status(404).send({message : "Review not found"})
+        const data = await review.finfByIdAndUpdate(id, updateData, { new: true })
+        if (!data) {
+            return response.status(404).send({ message: "Review not found" })
         }
         return response.status(200).send(data)
-    }catch(err){
+    } catch (err) {
         return response.status(500).send({ message: "Failed with updating review" });
     }
 }
 
-exports.deleteReviewById = async(request, response) => {
-    try{
-        const id = request.params.id;
-        const data = await review.deleteOne(id)
-        return response.status(200).send({message : "Review deleted successfully"})
-    }catch(err){
-        return response.status(500).send({ message: "Failed with Deleting review" });
+exports.deleteReviewById = async (request, response) => {
+    try {
+        const {reviewId} = request.params;
+        const data = await review.findByIdAndDelete(reviewId);
+        return response.status(200).send({ message: "Review deleted successfully" })
+    } catch (err) {
+        console.log(err);
+        return response.status(500).send({ message: "Failed with Deleting review", error: err });
     }
 }

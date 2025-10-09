@@ -36,15 +36,16 @@ db.mongoose.connect(`mongodb://${dbConfiguration.HOST}:${dbConfiguration.PORT}/$
 require("./app/routes/book.route")(app);
 require("./app/routes/review.route")(app);
 require("./app/routes/user.route")(app);
+require("./app/routes/file.route")(app);
 
 app.listen(PORT, () => {
     console.log(`Server is on and running on port ${PORT}.`);
 });
 
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(err.status || 500).json({ error: 'Internal Server Error' });
-// });
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).json({ error: 'Internal Server Error' });
+});
 
 
 

@@ -4,11 +4,11 @@ const router = require("express").Router()
 module.exports = (app) => {
     router.post(`/:id/review`, controller.addReview);
 
-    router.get(`/:id/review`, controller.getAllReviews);
+    router.get(`/:bookid/review`, controller.getAllReviews);
 
-    router.put(``,controller.editReviewById); //pending
+    router.put('/:bookid/review/:reviewId',controller.editReviewById);
 
-    router.delete('',controller.deleteReviewById); //pending
+    router.delete('/:id/review/:reviewId',controller.deleteReviewById);
 
     app.use('/api/book',router);
 

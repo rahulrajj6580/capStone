@@ -10,7 +10,7 @@ exports.addReview = async (request, response) => {
             comment: request.body.comment
         });
         const data = await newReview.save(newReview);
-        return response.status(200).send(data);
+        return response.status(201).send(data);
     } catch (err) {
         response.status(500).send({ error: "Error adding review" });
     }

@@ -4,7 +4,7 @@ const maxSize = 20 * 1024 * 1024;
 const path = require('path');
 const fs = require('fs');
 
-const uploadPath = path.join(__dirname,'..','..','resources','static', 'assets', 'uploads');
+const uploadPath = path.join(__dirname,'..','..','resources');
 
 if(!fs.existsSync(uploadPath)){
     fs.mkdirSync(uploadPath,{recursive: true});

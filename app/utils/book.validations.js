@@ -1,6 +1,5 @@
 const { body } = require('express-validator');
-const db = require("../models");
-const book = db.book
+const Book = require("../models/books.model");
 
 exports.title = body('title').notEmpty().withMessage('Tittle was empty').isLength({max : 50}).withMessage('exceeding title characters')
 
@@ -23,12 +22,9 @@ exports.publishedDate = body('publishedDate').notEmpty().withMessage('date was e
 exports.genre = body('genre').notEmpty().withMessage('genre was empty').isLength({max : 20}).withMessage('exceeding genre characters')
 
 exports.checkDuplicateTitle = async (title)=> {
-    const existingbook = await book.findOne({title:title});
-    if(existingbook){
-        return false;       
-    }else{
-        return true;
-    }
+    const existingbook = await Book.find({title : title})
+    console.log(`existingbook       ${existingbook}`);
+    return existingbook.length === 0;
 }
 
 

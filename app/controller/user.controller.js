@@ -2,12 +2,12 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const { validationResult } = require("express-validator");
 const db = require("../models");
+const { getAsync, setAsync } = require('../utils/redis');
 const user = db.user
 
 exports.addUser = async (request, response) => {
     try {
         const errors = validationResult(request);
-        console.log(errors, "errrrrrorrrrrrr");
         if (!errors.isEmpty()) {
             return response.status(403).send({ message: errors.errors[0].msg })
         }
@@ -22,16 +22,30 @@ exports.addUser = async (request, response) => {
             role: request.body.role
         });
         const data = await newUser.save(newUser);
-        return response.status(200).send(data);
+        return response.status(201).send(data);
     } catch (err) {
-        console.log(err, "catch block errorrrrrr");
         return response.status(500).send({ message: 'Error adding a new user' });
     }
 }
 
 exports.getAllUsers = async (request, response) => {
     try {
+
+        const getRes = await getAsync("Users");
+        if (getRes) {
+            console.log("Used Cache");
+            return res.json({ success: true, data: JSON.parse(getRes) });
+        }
+
         const data = await user.find();
+
+        await setAsync(
+            "allUsers", 
+            JSON.stringify({ user }), 
+            "EX", 
+            60 
+        );
+
         return response.status(200).send(data);
     } catch (err) {
         return response.status(500).send({ message: "Error getting all users" });
@@ -69,7 +83,7 @@ exports.loginUser = async (request, response) => {
 
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
             algorithm: 'HS256',
-            expiresIn: '1hr',
+            expiresIn: '12hr',
         });
 
         return response.status(200).send({

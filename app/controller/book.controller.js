@@ -1,6 +1,5 @@
-const db = require("../models");
+const Book = require("../models/books.model");
 const { checkDuplicateTitle } = require("../utils/book.validations");
-const book = db.book
 
 exports.addBooks = async (request, response) => {
     try {
@@ -8,17 +7,16 @@ exports.addBooks = async (request, response) => {
         if (!isUnique) {
             return response.status(409).send({ message: "title already exists" })
         }
-        const newBook = new book({
+        const newBook = new Book({
             title: request.body.title,
-            author: request.body.title,
+            author: request.body.author,
             genre: request.body.genre,
             description: request.body.description,
-            publishedDate: request.body.publishedDate
+            publishedDate: request.body.publishedDate,
+            createdBy: request.user._id
         })
-
-        const data = await newBook.save(newBook);
-        return response.status(200).send(data);
-
+        const data = await newBook.save();
+        return response.status(201).send(data);
     } catch (err) {
         response.status(500).send({ message: "error in adding a new record"});
     }
@@ -27,7 +25,7 @@ exports.addBooks = async (request, response) => {
 
 exports.getAllBooks = async (_, response) => {
     try {
-        const data = await book.find();
+        const data = await Book.find();
         return response.status(200).send(data);
 
     } catch (err) {
@@ -39,7 +37,7 @@ exports.getAllBooks = async (_, response) => {
 exports.getBookById = async (request, response) => {
     try {
         const id = request.params.id;
-        const data = await book.findById(id)
+        const data = await Book.findById(id)
         return response.status(200).send(data);
 
     } catch (err) {
@@ -51,7 +49,7 @@ exports.updateBookById = async (request, response) => {
     try {
         const id = request.params.id;
         const updateData = request.body
-        const data = await book.findByIdAndUpdate(id, updateData, { new: true })
+        const data = await Book.findByIdAndUpdate(id, updateData, { new: true })
         if (!data) {
             return response.status(404).send({ message: "book not found" });
         }
